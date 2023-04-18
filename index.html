@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Analog_Clock</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <link rel="stylesheet" href="css/clock.css" type="text/css" />
+
+    <!-- JavaScript -->
+    <script src="js/bootstrap.js"></script>
+    <!-- 背景表示 -->
+    <script src="js/background.js"></script>
+    <!-- 時計表示 -->
+    <script src="js/clock.js"></script>
+    <!-- サウンド -->
+    <script src="js/sound.js"></script>
+    <script>
+      function hourlyTask() {
+        const now = new Date();
+        if (now.getSeconds() === 0) {
+          if (now.getMinutes() === 0) {
+            changeBackground();
+            PlayAudio();
+          }
+        }
+      }
+
+      setInterval(hourlyTask, 1000);
+    </script>
+    <script>
+      function muteicon() {
+        const onIcon = document.querySelector(".on-icon");
+        const offIcon = document.querySelector(".off-icon");
+
+        onIcon.classList.toggle("d-none");
+        offIcon.classList.toggle("d-none");
+        MuteAudio();
+      }
+    </script>
+  </head>
+
+  <body class="part-img" background="img/1.jpg">
+    <header>
+      <!-- メニューボタン(Bootstrap) -->
+      <nav class="navbar navbar-light">
+        <div class="container-fluid justify-content-end">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasExample"
+            aria-controls="offcanvasExample"
+            style="background-color: rgba(135, 131, 131, 0.7)"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+    <!-- メニュー -->
+
+    <div
+      class="offcanvas offcanvas-end bg-light opacity-750"
+      tabindex="-1"
+      id="offcanvasExample"
+      aria-labelledby="offcanvasExampleLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">メニュー</h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="offcanvas-body">
+        <ul class="list-group">
+          <small>・アラーム</small>
+
+          <div class="offcanvas-body">
+            <!-- ここにアラーム機能 -->
+            <body>
+              <h1 class="up"></h1>
+              <div class="watch-overlay">
+                <div class="watch">
+                  <div class="inner-watch">
+                    <p class="current-time">00:00:00</p>
+                  </div>
+                </div>
+                <button class="set-alarm">Set Alarm</button>
+                <div class="options">
+                  <select class="hours"></select>
+                  <select class="minutes"></select>
+                </div>
+              </div>
+              <h1 class="down"></h1>
+            </body>
+          </div>
+
+          <!-- ここにテーマ機能 -->
+          <small>・テーマ</small>
+          <div class="btn-group" role="group" aria-label="Season theme buttons">
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              onclick="Change_clock_color(0)"
+            >
+              <span class="emoji">🌸</span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-success"
+              onclick="Change_clock_color(1)"
+            >
+              <span class="emoji">🍉</span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-warning"
+              onclick="Change_clock_color(2)"
+            >
+              <span class="emoji">🎃</span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-info"
+              onclick="Change_clock_color(3)"
+            >
+              <span class="emoji">⛄</span>
+            </button>
+          </div>
+
+          <!-- ここにテーマ機能 -->
+          <br />
+          <small>・フォント</small>
+          <div class="btn-group" role="group" aria-label="Season theme buttons">
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              onclick="change_font(0)"
+            >
+              <span class="emoji">Segoe Print (大)</span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-success"
+              onclick="change_font(1)"
+            >
+              <span class="emoji">Segoe Print (小)</span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-warning"
+              onclick="change_font(2)"
+            >
+              <span class="emoji">Andalus (大)</span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-info"
+              onclick="change_font(3)"
+            >
+              <span class="emoji">Andalus (小)</span>
+            </button>
+          </div>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ミュートボタン -->
+    <div class="offcanvas-body">
+      <div class="mute-button position-fixed bottom-0 end-0">
+        <button
+          onclick="muteicon()"
+          class="btn btn-sm btn-secondary"
+          style="opacity: 0.7"
+        >
+          <img
+            src="img/ico/Vol_on.png"
+            alt="on_icon"
+            class="on-icon img-fluid d-none"
+          />
+          <img
+            src="img/ico/Vol_off.png"
+            alt="off_icon"
+            class="off-icon img-fluid"
+          />
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn--orange" onclick="ButtonPutBack()">
+      停止
+    </button>
+
+    <!-- 時計表示 -->
+    <div class="d-flex justify-content-center align-items vh-100">
+      <div class="clockbox">
+        <canvas id="clockid"></canvas>
+      </div>
+    </div>
+    <script src="js/alarm.js"></script>
+  </body>
+</html>
